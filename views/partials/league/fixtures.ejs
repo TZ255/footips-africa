@@ -1,0 +1,32 @@
+<% const games = Array.isArray(fixtures) ? fixtures : []; %>
+<% const formatDate = (dateStr) => {
+  if (!dateStr) return 'TBD';
+  const date = new Date(dateStr);
+  if (Number.isNaN(date.getTime())) return 'TBD';
+  return new Intl.DateTimeFormat(locale || 'en', {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+    timeZone: timezone || 'UTC',
+  }).format(date);
+}; %>
+
+<% if (!games.length) { %>
+  <div class="empty-state">Fixtures are not available yet.</div>
+<% } else { %>
+  <div class="fixtures-grid">
+    <% games.forEach((fixture) => { %>
+      <article class="fixture-card">
+        <div class="fixture-time"><%= formatDate(fixture.fixture?.date) %></div>
+        <div class="fixture-match">
+          <span class="fixture-team"><%= fixture.teams?.home?.name || 'Home' %></span>
+          <span class="fixture-vs">vs</span>
+          <span class="fixture-team"><%= fixture.teams?.away?.name || 'Away' %></span>
+        </div>
+        <div class="fixture-meta">
+          <span><%= fixture.fixture?.venue?.name || 'Venue TBD' %></span>
+          <span class="muted"><%= fixture.fixture?.status?.long || fixture.league?.round || 'Scheduled' %></span>
+        </div>
+      </article>
+    <% }) %>
+  </div>
+<% } %>

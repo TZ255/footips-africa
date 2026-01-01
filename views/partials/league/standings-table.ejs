@@ -1,0 +1,43 @@
+<% const rows = Array.isArray(standings) ? standings : []; %>
+<% const limitRows = typeof limit === 'number' ? rows.slice(0, limit) : rows; %>
+<% if (!limitRows.length) { %>
+  <div class="empty-state">Standings are not available right now.</div>
+<% } else { %>
+  <div class="table-wrap">
+    <table class="league-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Team</th>
+          <th class="center">P</th>
+          <th class="center hide-sm">W</th>
+          <th class="center hide-sm">D</th>
+          <th class="center hide-sm">L</th>
+          <th class="center">GD</th>
+          <th class="center">Pts</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% limitRows.forEach((team) => { %>
+          <tr>
+            <td class="center strong"><%= team.rank ?? '-' %></td>
+            <td>
+              <div class="team-cell">
+                <% if (team.team?.logo) { %>
+                  <img class="team-logo" src="<%= team.team.logo %>" alt="<%= team.team?.name || 'Team' %>" loading="lazy" />
+                <% } %>
+                <span><%= team.team?.name || 'Team' %></span>
+              </div>
+            </td>
+            <td class="center"><%= team.all?.played ?? '-' %></td>
+            <td class="center hide-sm"><%= team.all?.win ?? '-' %></td>
+            <td class="center hide-sm"><%= team.all?.draw ?? '-' %></td>
+            <td class="center hide-sm"><%= team.all?.lose ?? '-' %></td>
+            <td class="center"><%= team.goalsDiff ?? '-' %></td>
+            <td class="center strong accent"><%= team.points ?? '-' %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+<% } %>

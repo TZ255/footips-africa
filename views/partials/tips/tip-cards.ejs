@@ -1,0 +1,20 @@
+<% const list = Array.isArray(tips) ? tips : []; %>
+<div class="tips-grid">
+  <% if (!list.length) { %>
+    <div class="empty-state">No tips available yet. Please check back later.</div>
+  <% } %>
+  <% list.forEach((tip) => { %>
+    <article class="tip-card">
+      <div class="tip-meta">
+        <span class="tip-time"><%= tip.kickoff || 'TBD' %></span>
+        <span class="tip-date"><%= tip.dateLabel || '' %></span>
+      </div>
+      <h3 class="tip-match"><%= tip.match || 'Match' %></h3>
+      <div class="tip-league"><%= tip.league || 'League' %></div>
+      <div class="tip-pick"><%= tip.prediction || '-' %></div>
+      <% if (tip.explanation) { %>
+        <p class="tip-note"><%= tip.explanation %></p>
+      <% } %>
+    </article>
+  <% }) %>
+</div>

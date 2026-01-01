@@ -1,0 +1,12 @@
+<%
+  const dayKeys = Array.isArray(days) ? days : ['today', 'tomorrow'];
+  const dayLabels = labels || {};
+%>
+<% dayKeys.forEach((key) => { %>
+  <section class="section-card">
+    <div class="section-head">
+      <h2 class="section-title"><%= dayLabels[key] || key %> Tips</h2>
+    </div>
+    <%- include('./tip-cards', { tips: tips?.[key] || [] }) %>
+  </section>
+<% }) %>

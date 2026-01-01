@@ -1,0 +1,21 @@
+<% const brandName = country?.seo?.title || `Football Tips ${country?.name || ''}`.trim(); %>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="<%= routes?.home || '/' %>">
+      <span class="brand-title"><%= brandName %></span>
+      <span class="brand-subtitle">Daily tips for <%= country?.name || 'Africa' %></span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-label="Toggle navigation" data-nav-toggle>
+      Menu
+    </button>
+
+    <nav class="site-nav" data-nav>
+      <% (navItems || []).forEach((item) => { %>
+        <a class="nav-link <%= activeId === item.id ? 'active' : '' %>" href="<%= item.href %>">
+          <%= item.label %>
+        </a>
+      <% }) %>
+    </nav>
+  </div>
+</header>

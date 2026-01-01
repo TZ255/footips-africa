@@ -1,0 +1,24 @@
+<section class="market-grid">
+  <a class="market-card" href="<%= routes?.over15 || '/over-15' %>">
+    <h3><%= country?.markets?.over15?.title || 'Over 1.5 Tips' %></h3>
+    <p><%= country?.markets?.over15?.intro || 'Goals markets with value picks.' %></p>
+    <span class="market-link">View Over 1.5</span>
+  </a>
+  <a class="market-card" href="<%= routes?.btts || '/both-teams-to-score' %>">
+    <h3><%= country?.markets?.btts?.title || 'BTTS Tips' %></h3>
+    <p><%= country?.markets?.btts?.intro || 'Both teams to score markets.' %></p>
+    <span class="market-link">View BTTS</span>
+  </a>
+  <a class="market-card" href="<%= routes?.ht15 || '/first-half-over-15' %>">
+    <h3><%= country?.markets?.ht15?.title || 'First Half Over 1.5' %></h3>
+    <p><%= country?.markets?.ht15?.intro || 'Early goals markets.' %></p>
+    <span class="market-link">View 1st Half</span>
+  </a>
+  <% if (routes?.league) { %>
+    <a class="market-card" href="<%= routes.league %>">
+      <h3><%= country?.leagues?.[0]?.name || 'League Table' %></h3>
+      <p>Standings and fixtures for the local league.</p>
+      <span class="market-link">View League</span>
+    </a>
+  <% } %>
+</section>

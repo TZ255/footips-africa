@@ -1,0 +1,55 @@
+You are a senior Node.js/Express + EJS engineer and SEO-focused web architect.
+
+I have an existing Express/EJS website codebase (currently single-country) called Football Tips Kenya (footballtips.ke). I want to reuse its structure to build a new multi-country football tips website. (<dynamic country code>.footballtips.africa)
+
+GOALS
+1) Convert the site into a multi-country architecture (10+ countries).
+2) Remove VIP section completely and remove all authentication/session/user logic completely (routes, controllers, views, middleware, models, DB usage if only used for auth/VIP).
+3) Redesign UI into a clean, mobile-first, card-based layout (simple, fast, SEO-friendly). Keep it lightweight: Bootstrap 5 is okay, otherwise plain CSS is fine.
+4) SEO-first setup:
+   - Use a single global SEO config (siteName, defaultTitle, defaultDescription, defaultKeywords, defaultOgImage, twitter, etc).
+   - Canonical URL must be correct for every page.
+   - Per-country and per-page SEO should be generated from global variables + country config overrides (ex: countryName, language, locale, baseUrl/subdomain or path prefix).
+   - Add basic Open Graph + Twitter tags and JSON-LD where appropriate (WebSite + Organization; optional BreadcrumbList if easy).
+5) Country setup should be simple and scalable:
+   - Add countries via one config file (e.g. /config/countries.js or /data/countries.json).
+   - Each country has: code (tz/gh/ke…), name, localLanguage, locale (sw-TZ etc), currency optional, leagues list optional, and slug/pathPrefix or subdomain strategy.
+6) View structure:
+   - Each country has its own folder under /views/countries/<countryCode>/ and contains:
+     - today.ejs
+     - tomorrow.ejs
+     - league.ejs (league standings page)
+     - other tips pages like over/under 1.5, both teams to score etc (like in the project)
+   - Paths may be in local language (example: /leo for today in Swahili, /kesho for tomorrow, etc). This should be driven by config so each country can define its localized routes.
+7) Tips rendering:
+   - Tips components must be reusable EJS partials (e.g. /views/partials/tips/).
+   - League partial should be also be reusable, receiving the dynamic data from the server
+8) Routing:
+   - Implement country detection from URL.
+     Subdomain-based: tz.example.com/kesho or gh.footballtips.africa/tomorrow, read req.hostname and map subdomain -> country config. and make sure canonical URLs are correct.
+9) Performance:
+   - No heavy JS required.
+   - Use server-side rendering with EJS.
+   - Add caching headers for static assets.
+   - Ensure pages are indexable (no accidental noindex).
+
+DELIVERABLES
+- Provide a step-by-step refactor plan.
+- Show the new folder structure
+- Provide the key code changes:
+  - countries config file format
+  - SEO helper module that builds title/description/keywords/canonical/og per request
+  - middleware that resolves country + localized route map
+  - route files for country pages (/tomorrow, /<country league name eg. /kenya-premier-league>)
+  - EJS layout files (layout, header, footer) + card-based tips partial
+- Remove VIP and auth and their databases
+- Ensure no dead links remain (navbar/footer).
+- Include examples for at least 2 countries (e.g. MZ protugues routes /amanha, /mocambola; GH English routes: /tomorrow, /ghana-premier-league).
+
+ASSUMPTIONS
+- Keep the existing styling assets if possible but simplify into card UI.
+- Keep existing tips data source (whatever the project uses) but refactor the rendering into partials.
+- If the existing project uses a DB only for VIP/auth, remove DB usage. If DB is also used for tips, keep it.
+- Use clean, readable code and avoid overengineering.
+
+On homepage we will show the tips (todays one) with the local timezone, after tips we will show the short preview of the local league table, after the table we will have the local seo for the local audience, on the league page, we will have the extensive league data

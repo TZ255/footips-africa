@@ -1,0 +1,32 @@
+{
+  "name": "mkeka-uhakika-ssr",
+  "description": "Server-side rendered Express + EJS site for Football Tips Africa multi-country tips.",
+  "type": "module",
+  "version": "4.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js",
+    "lint": "echo \"No linter configured\""
+  },
+  "dependencies": {
+    "axios": "^1.13.2",
+    "compression": "^1.7.5",
+    "cors": "^2.8.5",
+    "dayjs": "^1.11.9",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-ejs-layouts": "^2.5.1",
+    "form-data": "^4.0.5",
+    "gray-matter": "^4.0.3",
+    "helmet": "^7.1.0",
+    "marked": "^9.1.5",
+    "mongoose": "^8.8.0",
+    "recachegoose": "^11.0.3",
+    "resend": "^6.5.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}

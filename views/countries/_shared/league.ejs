@@ -1,0 +1,33 @@
+<%
+  const leagueName = leagueConfig?.name || league?.league_name || league?.league?.name || 'League';
+  const season = league?.msimu?.long || league?.league_season || '';
+%>
+<section class="section-card hero-card">
+  <div class="hero-meta">
+    <span class="eyebrow"><%= country?.name || 'Country' %> League</span>
+    <span class="pill-outline">Standings and fixtures</span>
+  </div>
+  <h1 class="hero-title"><%= leagueName %> Table</h1>
+  <% if (season) { %>
+    <p class="hero-subtitle">Season <%= season %></p>
+  <% } %>
+  <p class="hero-intro">
+    Track form, points and fixtures for <%= leagueName %>. Use the table to compare momentum before betting.
+  </p>
+</section>
+
+<section class="section-card">
+  <div class="section-head">
+    <h2 class="section-title">Full Standings</h2>
+    <p class="section-subtitle">Live table for the current season.</p>
+  </div>
+  <%- include('../../partials/league/standings-table', { standings }) %>
+</section>
+
+<section class="section-card">
+  <div class="section-head">
+    <h2 class="section-title">Upcoming Fixtures</h2>
+    <p class="section-subtitle">Next round schedule and venues.</p>
+  </div>
+  <%- include('../../partials/league/fixtures', { fixtures, locale: country?.locale, timezone: country?.timezone }) %>
+</section>
