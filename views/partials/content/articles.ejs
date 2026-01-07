@@ -1,0 +1,17 @@
+<% const list = Array.isArray(articles) ? articles.filter((item) => item && (item.title || item.body)) : []; %>
+<% if (list.length) { %>
+  <div class="content-articles">
+    <% list.forEach((article) => { %>
+      <article class="content-article">
+        <% if (article.title) { %>
+          <h3><%= article.title %></h3>
+        <% } %>
+        <% if (article.body) { %>
+          <p><%= article.body %></p>
+        <% } %>
+      </article>
+    <% }) %>
+  </div>
+<% } else { %>
+  <div class="empty-state">More insights coming soon.</div>
+<% } %>

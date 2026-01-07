@@ -1,10 +1,10 @@
 <%
-  const leagueName = leagueConfig?.name || league?.league_name || league?.league?.name || 'League';
+  const leagueName = leagueConfig?.name || league?.league_name || league?.league?.name;
   const season = league?.msimu?.long || league?.league_season || '';
 %>
 <section class="section-card hero-card">
   <div class="hero-meta">
-    <span class="eyebrow"><%= country?.name || 'Country' %> League</span>
+    <span class="eyebrow"><%= country?.name %> League</span>
     <span class="pill-outline">Standings and fixtures</span>
   </div>
   <h1 class="hero-title"><%= leagueName %> Table</h1>

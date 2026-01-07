@@ -43,12 +43,15 @@ router.get('/sitemap.xml', async (req, res) => {
     const baseUrl = countryBaseUrl(country);
     if (!baseUrl) return;
 
-    Object.values(country.routes || {}).forEach((path) => {
+    const hasLeague = (country.leagues || []).some((league) => league?.isAvailable !== false);
+
+    Object.entries(country.routes || {}).forEach(([key, path]) => {
+      if (key === 'league' && !hasLeague) return;
       urls.push(`${baseUrl}${canonicalizePath(path)}`);
     });
 
     (country.leagues || []).forEach((league) => {
-      if (!league?.slug) return;
+      if (!league?.slug || league?.isAvailable === false) return;
       urls.push(`${baseUrl}${canonicalizePath(`/${league.slug}`)}`);
     });
   });

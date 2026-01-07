@@ -12,8 +12,10 @@ function normalizePath(path = '/') {
 }
 
 function getViewPath(country, viewName) {
-  const folder = country?.code || 'za';
-  return `countries/${folder}/${viewName}`;
+  if (!country?.code) {
+    throw new Error('Missing country code for view resolution');
+  }
+  return `countries/${country.code}/${viewName}`;
 }
 
 function formatLocalTime(country) {
@@ -33,8 +35,9 @@ function formatLocalTime(country) {
 }
 
 async function loadLeague(country, league) {
-  const leagueConfig = league || country?.leagues?.[0];
-  if (!leagueConfig?.id) {
+  const primaryLeague = (country?.leagues || []).find((item) => item?.isAvailable !== false);
+  const leagueConfig = league || primaryLeague;
+  if (!leagueConfig?.id || leagueConfig?.isAvailable === false) {
     return { league: null, standings: [], fixtures: [] };
   }
 
@@ -61,18 +64,20 @@ router.get('*', async (req, res, next) => {
   const labels = country.labels || {};
 
   try {
-    if (leagueConfig) {
+    if (leagueConfig && leagueConfig.isAvailable !== false) {
+      if (!leagueConfig.name) return next();
+      const leagueName = leagueConfig.name;
       const { league, standings, fixtures } = await loadLeague(country, leagueConfig);
       const seo = buildSeo({
         req,
         country,
         page: {
-          title: `${leagueConfig.name || 'League'} Table`,
-          description: `Standings and fixtures for ${leagueConfig.name || country.name}.`,
+          title: `${leagueName} Table`,
+          description: `Standings and fixtures for ${leagueName}.`,
           path,
           breadcrumbs: [
             { name: labels.navHome || 'Home', path: country.routes?.home || '/' },
-            { name: leagueConfig.name || 'League', path },
+            { name: leagueName, path },
           ],
         },
       });

@@ -32,9 +32,9 @@ a {
   text-decoration: none;
 }
 
-a:hover {
+/* a:hover {
   color: var(--accent-strong);
-}
+} */
 
 .page-shell {
   position: relative;
@@ -211,6 +211,18 @@ a:hover {
   flex-direction: column;
   gap: 6px;
   margin-bottom: 16px;
+}
+
+.section-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.section-meta .text-link {
+  margin-top: 0;
 }
 
 .section-title {
@@ -437,6 +449,28 @@ a:hover {
 
 .seo-card h3 {
   margin-top: 0;
+}
+
+.content-articles {
+  display: grid;
+  gap: 12px;
+}
+
+.content-article {
+  border: 1px solid var(--outline);
+  border-radius: 14px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.content-article h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.content-article p {
+  margin: 0;
+  line-height: 1.55;
 }
 
 .empty-state {

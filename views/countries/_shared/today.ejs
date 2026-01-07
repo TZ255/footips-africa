@@ -1,7 +1,9 @@
 <%
   const content = country?.content || {};
   const labels = country?.labels || {};
-  const leagueName = league?.league_name || league?.league?.name || country?.leagues?.[0]?.name || 'League';
+  const primaryLeague = (country?.leagues || []).find((item) => item?.isAvailable !== false && item.name);
+  const hasLeague = Boolean(primaryLeague);
+  const leagueName = league?.league_name || league?.league?.name || primaryLeague?.name;
   const season = league?.msimu?.long || league?.league_season || '';
 %>
 
@@ -15,7 +17,7 @@
   <p class="hero-intro"><%= content.intro || '' %></p>
   <div class="hero-actions">
     <a class="btn btn-primary" href="<%= routes?.tomorrow || '/tomorrow' %>">Tomorrow tips</a>
-    <% if (routes?.league) { %>
+    <% if (hasLeague && routes?.league) { %>
       <a class="btn btn-ghost" href="<%= routes.league %>">League table</a>
     <% } %>
   </div>
@@ -29,18 +31,35 @@
   <%- include('../../partials/tips/tip-cards', { tips: tips?.today || [] }) %>
 </section>
 
-<section class="section-card">
-  <div class="section-head">
-    <h2 class="section-title"><%= labels.leaguePreview || leagueName %></h2>
-    <% if (season) { %>
+<% if (pageKey === 'home') { %>
+  <section class="section-card">
+    <div class="section-head">
+      <div class="section-meta">
+        <h2 class="section-title"><%= labels.dayTomorrow || 'Tomorrow' %> Tips</h2>
+        <% if (routes?.tomorrow) { %>
+          <a class="text-link" href="<%= routes.tomorrow %>">View full slate</a>
+        <% } %>
+      </div>
+      <p class="section-subtitle">Early look so you can prep slips before odds move.</p>
+    </div>
+    <%- include('../../partials/tips/tip-cards', { tips: tips?.tomorrow || [] }) %>
+  </section>
+<% } %>
+
+<% if (hasLeague) { %>
+  <section class="section-card">
+    <div class="section-head">
+      <h2 class="section-title"><%= labels.leaguePreview || leagueName %></h2>
+      <% if (season) { %>
       <p class="section-subtitle"><%= leagueName %> <%= season %></p>
     <% } %>
   </div>
-  <%- include('../../partials/league/standings-table', { standings, limit: 10 }) %>
-  <% if (routes?.league) { %>
-    <a class="text-link" href="<%= routes.league %>"><%= labels.leagueCta || 'Full Table' %></a>
-  <% } %>
-</section>
+    <%- include('../../partials/league/standings-table', { standings, limit: 10 }) %>
+    <% if (routes?.league) { %>
+      <a class="text-link" href="<%= routes.league %>"><%= labels.leagueCta || 'Full Table' %></a>
+    <% } %>
+  </section>
+<% } %>
 
 <section class="section-card seo-blocks">
   <% (content.seoBlocks || []).forEach((block) => { %>
@@ -50,6 +69,16 @@
     </div>
   <% }) %>
 </section>
+
+<% if (content.articles?.length) { %>
+  <section class="section-card">
+    <div class="section-head">
+      <h2 class="section-title"><%= content.longformTitle || `Betting insights for ${country?.name || 'today'}` %></h2>
+      <p class="section-subtitle"><%= content.longformIntro || 'How we build predictions, manage bankrolls, and choose markets for smarter slips.' %></p>
+    </div>
+    <%- include('../../partials/content/articles', { articles: content.articles }) %>
+  </section>
+<% } %>
 
 <section class="section-card">
   <div class="section-head">

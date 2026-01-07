@@ -32,7 +32,12 @@ function normalizePath(path = '/') {
   return path;
 }
 
+function hasAvailableLeague(country) {
+  return (country.leagues || []).some((league) => league?.isAvailable !== false);
+}
+
 function buildNavItems(country, routes) {
+  const primaryLeague = (country.leagues || []).find((league) => league?.isAvailable !== false);
   const items = [
     { id: 'home', label: country.labels?.navHome || 'Home', href: routes.home || '/' },
     { id: 'today', label: country.labels?.navToday || 'Today', href: routes.today || routes.home || '/' },
@@ -42,20 +47,27 @@ function buildNavItems(country, routes) {
     { id: 'ht15', label: country.labels?.navHt15 || 'HT 1.5', href: routes.ht15 || '/first-half-over-15' },
   ];
 
-  if (routes.league) {
-    items.push({
-      id: 'league',
-      label: country.labels?.navLeague || country.leagues?.[0]?.name || 'League',
-      href: routes.league,
-    });
+  if (routes.league && primaryLeague) {
+    const leagueLabel = country.labels?.navLeague || primaryLeague.name;
+    if (leagueLabel) {
+      items.push({
+        id: 'league',
+        label: leagueLabel,
+        href: routes.league,
+      });
+    }
   }
 
   return items;
 }
 
 function buildRouteMap(country) {
+  const primaryLeague = (country.leagues || []).find((league) => league?.isAvailable !== false) || null;
   const routes = {};
+  const leagueAvailable = Boolean(primaryLeague);
+
   Object.entries(country.routes || {}).forEach(([key, path]) => {
+    if (key === 'league' && !leagueAvailable) return;
     routes[key] = normalizePath(path);
   });
 
@@ -66,12 +78,12 @@ function buildRouteMap(country) {
 
   const leagueByPath = {};
   (country.leagues || []).forEach((league) => {
-    if (!league?.slug) return;
+    if (!league?.slug || league?.isAvailable === false) return;
     leagueByPath[normalizePath(`/${league.slug}`)] = league;
   });
 
-  if (routes.league && country.leagues?.[0]) {
-    leagueByPath[routes.league] = country.leagues[0];
+  if (leagueAvailable && routes.league && primaryLeague) {
+    leagueByPath[routes.league] = primaryLeague;
   }
 
   return {
