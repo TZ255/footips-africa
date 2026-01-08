@@ -74,7 +74,7 @@ The layout in `views/layouts/main.ejs` renders:
 - Market cards: `views/partials/market-cards.ejs`
 - Country views: `views/countries/<code>/*.ejs`
 
-All styling is in `public/css/main.css` and uses a lightweight card-based,
+All styling is in `public/css/v1-main.css` and uses a lightweight card-based,
 mobile-first layout. The small nav toggle is in `public/js/site.js`.
 
 ## Static assets and caching
