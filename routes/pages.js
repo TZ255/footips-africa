@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import LeagueModel from '../models/league.js';
 import { buildSeo } from '../utils/seo.js';
-import { getMegaTips, getOver15Tips, getBttsTips, getHt15Tips } from '../utils/get-tips/index.js';
+import { getMegaTips, getOver15Tips, getBttsTips, getHt15Tips, getCorrectScoreTips } from '../utils/get-tips/index.js';
 
 const router = Router();
 
@@ -95,7 +95,10 @@ router.get('*', async (req, res, next) => {
     if (!pageKey) return next();
 
     if (pageKey === 'home' || pageKey === 'today') {
-      const tips = await getMegaTips(country.timezone);
+      const [tips, correctScoreTips] = await Promise.all([
+        getMegaTips(country.timezone),
+        getCorrectScoreTips(country.timezone),
+      ]);
       const { league, standings } = await loadLeague(country);
       const seo = buildSeo({
         req,
@@ -111,6 +114,7 @@ router.get('*', async (req, res, next) => {
         activeId: pageKey === 'home' ? 'home' : 'today',
         seo,
         tips,
+        correctScoreTips,
         standings: standings.slice(0, 10),
         league,
         localTime: formatLocalTime(country),
@@ -119,7 +123,10 @@ router.get('*', async (req, res, next) => {
     }
 
     if (pageKey === 'tomorrow') {
-      const tips = await getMegaTips(country.timezone);
+      const [tips, correctScoreTips] = await Promise.all([
+        getMegaTips(country.timezone),
+        getCorrectScoreTips(country.timezone),
+      ]);
       const seo = buildSeo({
         req,
         country,
@@ -138,6 +145,7 @@ router.get('*', async (req, res, next) => {
         activeId: 'tomorrow',
         seo,
         tips,
+        correctScoreTips,
       });
     }
 

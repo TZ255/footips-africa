@@ -141,3 +141,25 @@ export async function getHt15Tips(timezone) {
 
   return buckets;
 }
+
+export async function getCorrectScoreTips(timezone) {
+  const { today, yesterday, tomorrow } = dateStrings(timezone);
+  const yyyyMmDd = (d) => d.split('/').reverse().join('-');
+  const days = [yyyyMmDd(today), yyyyMmDd(yesterday), yyyyMmDd(tomorrow)];
+
+  const docs = await correctScoreModel
+    .find({ date: { $in: days }, score: { $ne: null } })
+    .sort('time')
+    .lean()
+    .cache(600);
+
+  const buckets = emptyBuckets();
+  docs.forEach((doc) => {
+    const tip = mapTip(doc, doc.score);
+    if (doc.date === days[0]) buckets.today.push(tip);
+    if (doc.date === days[1]) buckets.yesterday.push(tip);
+    if (doc.date === days[2]) buckets.tomorrow.push(tip);
+  });
+
+  return buckets;
+}

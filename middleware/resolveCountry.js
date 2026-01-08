@@ -1,4 +1,4 @@
-import { COUNTRY_MAP, DEFAULT_COUNTRY_CODE } from '../config/countries.js';
+import { COUNTRIES, COUNTRY_MAP, DEFAULT_COUNTRY_CODE } from '../config/countries.js';
 import { SEO } from '../config/seo.js';
 
 function stripPort(hostname = '') {
@@ -24,6 +24,47 @@ function getSubdomain(hostname) {
   }
 
   return null;
+}
+
+function buildCountryLinks(req) {
+  const rawHost = req.get('host') || '';
+  const cleanHost = stripPort(rawHost);
+  const port = rawHost.includes(':') ? rawHost.split(':')[1] : '';
+  const protocol = SEO.protocol;
+  const baseDomain = SEO.baseDomain;
+  const isDev = process.env.NODE_ENV === 'development';
+
+  return COUNTRIES.map((country) => {
+    if (!country?.seo?.title) return null;
+    const homePath = country.routes?.home || '/';
+
+    if (!isDev && baseDomain && country.subdomain) {
+      return {
+        name: country.seo.title,
+        href: `${protocol}://${country.subdomain}.${baseDomain}${homePath}`,
+      };
+    }
+
+    // Development: keep everything on localhost with subdomains if present
+    if (isDev && country.subdomain) {
+      return {
+        name: country.seo.title,
+        href: `${protocol}://${country.subdomain}.localhost${port ? `:${port}` : ''}${homePath}`,
+      };
+    }
+
+    let targetHost = cleanHost;
+    if (country.subdomain && cleanHost.includes('.')) {
+      const parts = cleanHost.split('.');
+      parts[0] = country.subdomain;
+      targetHost = parts.join('.');
+    }
+
+    return {
+      name: country.seo.title,
+      href: `${protocol}://${targetHost}${port ? `:${port}` : ''}${homePath}`,
+    };
+  }).filter(Boolean);
 }
 
 function normalizePath(path = '/') {
@@ -105,6 +146,7 @@ export function resolveCountry(req, res, next) {
   res.locals.country = country;
   res.locals.routes = routeMap.routes;
   res.locals.navItems = routeMap.navItems;
+  res.locals.countryLinks = buildCountryLinks(req);
 
   next();
 }

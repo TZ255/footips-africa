@@ -6,14 +6,22 @@
     <span class="eyebrow">Plan ahead for <%= country?.name || 'Africa' %></span>
     <span class="pill-outline">Tomorrow tips</span>
   </div>
-  <h1 class="hero-title"><%= labels.dayTomorrow || 'Tomorrow' %> Tips</h1>
+  <h1 class="hero-title"><%= labels.dayTomorrow || 'Tomorrow' %> Top Tips</h1>
   <p class="hero-subtitle">Get early picks for the next match day.</p>
 </section>
 
 <section class="section-card">
   <div class="section-head">
-    <h2 class="section-title"><%= labels.dayTomorrow || 'Tomorrow' %> Tips</h2>
+    <h2 class="section-title"><%= labels.dayTomorrow || 'Tomorrow' %> Top Tips</h2>
     <p class="section-subtitle">Updated daily based on form, injuries and match context.</p>
   </div>
   <%- include('../../partials/tips/tip-cards', { tips: tips?.tomorrow || [] }) %>
+</section>
+
+<section class="section-card">
+  <div class="section-head">
+    <h2 class="section-title"><%= labels.dayTomorrow || 'Tomorrow' %> Correct Score Tips</h2>
+    <p class="section-subtitle">Exact score predictions you can prep before lines move.</p>
+  </div>
+  <%- include('../../partials/tips/tip-cards', { tips: correctScoreTips?.tomorrow || [] }) %>
 </section>

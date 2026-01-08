@@ -25,7 +25,7 @@
 
 <section class="section-card">
   <div class="section-head">
-    <h2 class="section-title"><%= labels.dayToday || 'Today' %> Tips</h2>
+    <h2 class="section-title"><%= labels.dayToday || 'Today' %> Top Tips</h2>
     <p class="section-subtitle">Updated daily based on form, injuries and match context.</p>
   </div>
   <%- include('../../partials/tips/tip-cards', { tips: tips?.today || [] }) %>
@@ -35,7 +35,7 @@
   <section class="section-card">
     <div class="section-head">
       <div class="section-meta">
-        <h2 class="section-title"><%= labels.dayTomorrow || 'Tomorrow' %> Tips</h2>
+        <h2 class="section-title"><%= labels.dayTomorrow || 'Tomorrow' %> Top Tips</h2>
         <% if (routes?.tomorrow) { %>
           <a class="text-link" href="<%= routes.tomorrow %>">View full slate</a>
         <% } %>
@@ -45,6 +45,14 @@
     <%- include('../../partials/tips/tip-cards', { tips: tips?.tomorrow || [] }) %>
   </section>
 <% } %>
+
+<section class="section-card">
+  <div class="section-head">
+    <h2 class="section-title">Today&rsquo;s Correct Score Tips</h2>
+    <p class="section-subtitle">Exact score picks built from recent scoring patterns and game tempo.</p>
+  </div>
+  <%- include('../../partials/tips/tip-cards', { tips: correctScoreTips?.today || [] }) %>
+</section>
 
 <% if (hasLeague) { %>
   <section class="section-card">

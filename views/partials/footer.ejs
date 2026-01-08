@@ -6,4 +6,19 @@
     </div>
     <div class="footer-meta">&copy; <%= new Date().getFullYear() %> All rights reserved.</div>
   </div>
+  <% if (countryLinks?.length) { %>
+    <div class="container footer-links-wrap">
+      <div class="footer-links-head">
+        <div class="footer-links-title">Football Tips by Country</div>
+        <div class="footer-links-subtitle">Browse every region we cover</div>
+      </div>
+      <ul class="footer-links" aria-label="Football tips by country">
+        <% countryLinks.forEach((link) => { %>
+          <li>
+            <a class="footer-link" href="<%= link.href %>"><%= link.name %></a>
+          </li>
+        <% }) %>
+      </ul>
+    </div>
+  <% } %>
 </footer>
