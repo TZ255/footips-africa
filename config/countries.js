@@ -691,9 +691,9 @@ export const COUNTRIES = [
     },
     leagues: [
       {
-        id: 221,
+        id: 405,
         name: 'Rwanda Premier League',
-        isAvailable: false,
+        isAvailable: true,
         slug: 'rwanda-premier-league',
         shortName: 'RPL',
       },
